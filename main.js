@@ -158,8 +158,8 @@ function loadQuestion(){
   $('question-display').innerHTML=q.display||'';
   $('question-extra').innerHTML=q.extra||'';
   $('feedback-box').className='feedback-box hidden';
-  $('hint-text').className='hint-text hidden';
-  $('hint-btn').classList.remove('hidden'); $('hint-btn').textContent='💡 ヒント';
+  resetHints();
+  $('hint-btn').classList.remove('hidden'); $('hint-btn').textContent='💡 ヒント'; $('hint-btn').disabled=false;
   $('submit-btn').classList.remove('hidden'); $('submit-btn').disabled=false;
   $('next-btn').classList.add('hidden');
   buildFields(q);
@@ -196,7 +196,12 @@ function flashNote(msg){
 }
 function userEqLatex(q,userVals){
   if(q.mode==='equation') return cleanLatex((userVals&&userVals[0])||'?');
-  return q.inputs.map((inp,i)=>`${inp.before||''} ${cleanLatex(userVals[i]||'?')} ${inp.after||''}`).join(' ');
+  // before/after に含まれる \( \) を除去し、外側で1回だけ数式化（入れ子で壊れるのを防ぐ）
+  return q.inputs.map((inp,i)=>{
+    const b=(inp.before||'').replace(/\\[()]/g,'');
+    const a=(inp.after||'').replace(/\\[()]/g,'');
+    return `${b}${cleanLatex(userVals[i]||'?')}${a}`;
+  }).join('');
 }
 function cleanLatex(s){ return String(s).replace(/\\dfrac/g,'\\frac'); }
 
@@ -222,16 +227,36 @@ function finishQuestion(ok,userVals,gaveUp){
   if(ok) try{ confetti({particleCount:60,spread:55,origin:{y:.7}}); }catch(_){}
 }
 
-/* ヒント */
+/* ヒント（積み重ね式） */
+function resetHints(){
+  const box=$('hint-text');
+  box.innerHTML=''; box.className='hint-text hidden';
+  const main=document.querySelector('.quiz-main');
+  if(main) main.classList.remove('two-col');
+}
+function appendHint(html,stepNo,isAnswer){
+  const box=$('hint-text');
+  box.classList.remove('hidden');
+  const block=document.createElement('div');
+  block.className='hint-step'+(isAnswer?' hint-step--answer':'');
+  const label=isAnswer?'答え':('ステップ'+stepNo);
+  block.innerHTML='<span class="hint-step-no">'+label+'</span>'
+    +'<span class="hint-step-body">'+html+'</span>';
+  box.appendChild(block);
+  const main=document.querySelector('.quiz-main');
+  if(main && box.querySelectorAll('.hint-step').length>=2) main.classList.add('two-col');
+  typeset(box);
+  box.scrollTop=box.scrollHeight;
+}
 $('hint-btn').onclick=()=>{
   if(locked) return;
   const q=session[idx];
   if(hintStep>=q.hints.length-1){
     if(!confirm('⚠️ 次のヒントは答えだよ！見ると不正解（ギブアップ）になるけど見る？')) return;
-    $('hint-text').innerHTML=q.hints[q.hints.length-1]; $('hint-text').classList.remove('hidden'); typeset($('hint-text'));
+    appendHint(q.hints[q.hints.length-1], hintStep+1, true);
     finishQuestion(false, fields.map(getVal), true); return;
   }
-  $('hint-text').innerHTML=q.hints[hintStep]; $('hint-text').classList.remove('hidden'); typeset($('hint-text'));
+  appendHint(q.hints[hintStep], hintStep+1, false);
   hintStep++;
   if(hintStep>=q.hints.length-1) $('hint-btn').textContent='⚠️ 答えを見る';
 };

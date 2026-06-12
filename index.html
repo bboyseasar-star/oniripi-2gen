@@ -59,23 +59,25 @@
 
     <main class="quiz-main single">
       <section class="center-panel">
-        <div class="question-card">
-          <p class="question-label" id="question-label">式を求めなさい</p>
-          <div id="question-display" class="equation-display"></div>
-          <div id="question-extra" class="question-extra"></div>
-        </div>
-
-        <div class="answer-zone">
-          <div class="answer-row" id="answer-row"><!-- JSが入力欄を生成 --></div>
-          <p class="input-note">※半角で入力してね（分数は <span class="kbd">a/b</span> ボタン）</p>
-          <div class="helper-keys">
-            <button class="hkey" data-cmd="frac">a/b 分数</button>
-            <button class="hkey" data-cmd="minus">−</button>
-            <button class="hkey" data-cmd="clear">クリア</button>
+        <div class="main-left">
+          <div class="question-card">
+            <p class="question-label" id="question-label">式を求めなさい</p>
+            <div id="question-display" class="equation-display"></div>
+            <div id="question-extra" class="question-extra"></div>
           </div>
-        </div>
 
-        <div id="feedback-box" class="feedback-box hidden"></div>
+          <div class="answer-zone">
+            <div class="answer-row" id="answer-row"><!-- JSが入力欄を生成 --></div>
+            <p class="input-note">※半角で入力してね（分数は <span class="kbd">a/b</span> ボタン）</p>
+            <div class="helper-keys">
+              <button class="hkey" data-cmd="frac">a/b 分数</button>
+              <button class="hkey" data-cmd="minus">−</button>
+              <button class="hkey" data-cmd="clear">クリア</button>
+            </div>
+          </div>
+
+          <div id="feedback-box" class="feedback-box hidden"></div>
+        </div>
 
         <div class="hint-area">
           <button id="hint-btn" class="btn-hint">💡 ヒント</button>
