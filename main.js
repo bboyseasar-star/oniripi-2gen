@@ -227,24 +227,26 @@ function finishQuestion(ok,userVals,gaveUp){
   if(ok) try{ confetti({particleCount:60,spread:55,origin:{y:.7}}); }catch(_){}
 }
 
-/* ヒント（積み重ね式） */
+/* ヒント（積み重ね式・右カラム固定） */
+const HINT_PLACEHOLDER='<div class="hint-placeholder">💡 ヒントを押すと、ここに順番に出るよ</div>';
 function resetHints(){
   const box=$('hint-text');
-  box.innerHTML=''; box.className='hint-text hidden';
-  const main=document.querySelector('.quiz-main');
-  if(main) main.classList.remove('two-col');
+  // 右カラムは最初から表示（空でもプレースホルダーで埋める）
+  box.className='hint-text';
+  box.innerHTML=HINT_PLACEHOLDER;
 }
 function appendHint(html,stepNo,isAnswer){
   const box=$('hint-text');
   box.classList.remove('hidden');
+  // 最初のヒントが出たらプレースホルダーを消す
+  const ph=box.querySelector('.hint-placeholder');
+  if(ph) ph.remove();
   const block=document.createElement('div');
   block.className='hint-step'+(isAnswer?' hint-step--answer':'');
   const label=isAnswer?'答え':('ステップ'+stepNo);
   block.innerHTML='<span class="hint-step-no">'+label+'</span>'
     +'<span class="hint-step-body">'+html+'</span>';
   box.appendChild(block);
-  const main=document.querySelector('.quiz-main');
-  if(main && box.querySelectorAll('.hint-step').length>=2) main.classList.add('two-col');
   typeset(box);
   box.scrollTop=box.scrollHeight;
 }
