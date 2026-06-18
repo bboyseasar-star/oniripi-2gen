@@ -1,4 +1,4 @@
-// questions.js ── 鬼リピ 式変形マスター
+// questions.js ── 式変形マスター
 // 2元1次方程式 を y=mx+n に変形する。答えは m, n（2マス）
 
 function gcd(a,b){ a=Math.abs(a);b=Math.abs(b); while(b){[a,b]=[b,a%b];} return a||1; }
