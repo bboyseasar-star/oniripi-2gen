@@ -93,7 +93,7 @@ function buildFields(q){
     mf.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!locked) submit(); } });
     forceHalfWidth(mf);
     fields.push(mf); lastFocused=mf;
-    note.innerHTML='※「y =」から式を全部入力してね（分数は <span class="kbd">a/b</span> ボタン）';
+    note.innerHTML='※「y =」から式を全部入力してね（分数は <span class="kbd">\\(\\frac{a}{b}\\)</span> ボタン）';
     delete note.dataset.orig;
     typeset(row); return;
   }
@@ -258,7 +258,8 @@ $('hint-btn').onclick=async()=>{
     if(!(await showConfirm({title:'答えを見る？',message:'次のヒントは答えだよ！見ると不正解（ギブアップ）になります。',okText:'見る',danger:true}))) return;
     if(locked) return;
     appendHint(q.hints[q.hints.length-1], hintStep+1, true);
-    finishQuestion(false, fields.map(getVal), true); return;
+    const cur=fields.map(getVal);
+    finishQuestion(false, cur.some(v=>v&&String(v).trim())?cur:null, true); return;
   }
   appendHint(q.hints[hintStep], hintStep+1, false);
   hintStep++;
@@ -343,7 +344,7 @@ function initMemo(){
 }
 
 /* ===== 起動 ===== */
-function boot(){ renderHome(); initMemo(); }
+function boot(){ renderHome(); initMemo(); window.addEventListener('load',()=>typeset()); }
 if(document.readyState==='loading') window.addEventListener('DOMContentLoaded',boot); else boot();
 
 })();

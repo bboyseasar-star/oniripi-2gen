@@ -91,7 +91,7 @@ function genLevel3(){
       level:3,
       label:'次の式を \\(y=\\) の形に変形しなさい',
       display:`\\(${coefTerm(b,'y')}=${b*k}\\)`,
-      extra:'<p style="font-size:1.5vh;color:var(--muted)">※xがない＝傾き0。\\(a\\)のマスには 0 を入れよう</p>',
+      extra:'<p style="font-size:1.5vh;color:var(--muted)">※xがない＝傾き0。式は \\(y='+k+'\\) と入力しよう</p>',
       inputs:INPUTS, answers:[0,k], answerLatex:yEqLatex(0,k),
       hints:[ `\\(x\\) がないね。両辺を \\(${b}\\) でわろう。`, `傾きは0、\\(y=${k}\\) だよ。`, `答えは \\(y=${k}\\)（\\(a\\)は0）` ],
       solution:`両辺を \\(${b}\\) でわって \\(y=${k}\\)（傾き0）`
@@ -105,7 +105,7 @@ function genLevel3(){
     level:3,
     label:'次の式を \\(y=\\) の形に変形しなさい',
     display:`\\(${joinTerms([coefTerm(A,'x'),coefTerm(B,'y')])}=${C}\\)`,
-    extra:'<p style="font-size:1.5vh;color:var(--muted)">※分数は a/b ボタンで入力</p>',
+    extra:'<p style="font-size:1.5vh;color:var(--muted)">※分数は \\(\\frac{a}{b}\\) ボタンで入力</p>',
     inputs:INPUTS, answers:[mF[0]/mF[1], nF[0]/nF[1]], answerLatex:yEqLatex(mF,nF),
     hints:[
       `\\(${coefTerm(A,'x')}\\) を右辺に移項：\\(${coefTerm(B,'y')}=${joinTerms([coefTerm(-A,'x'),String(C)])}\\)。`,
