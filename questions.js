@@ -50,7 +50,7 @@ function genLevel1(){
   const right=joinTerms([coefTerm(b*m,'x'), (b*n)===0?'':String(b*n)]);
   return {
     level:1,
-    label:'次の式を \\(y=\\) の形に変形しなさい',
+    label:'次の式をyについて解きなさい',
     display:`\\(${left}=${right}\\)`,
     extra:'', inputs:INPUTS, answers:[m,n], answerLatex:yEqLatex(m,n),
     hints:[
@@ -72,7 +72,7 @@ function genLevel2(){
   const display=`\\(${joinTerms([coefTerm(A,'x'),coefTerm(b,'y')])}=${C}\\)`;
   return {
     level:2,
-    label:'次の式を \\(y=\\) の形に変形しなさい',
+    label:'次の式をyについて解きなさい',
     display, extra:'', inputs:INPUTS, answers:[m,n], answerLatex:yEqLatex(m,n),
     hints:[
       `まず \\(${coefTerm(A,'x')}\\) を右辺に移項しよう（符号が変わる）。`,
@@ -89,7 +89,7 @@ function genLevel3(){
     const b=pick([2,3]); const k=RNG(-4,4);
     return {
       level:3,
-      label:'次の式を \\(y=\\) の形に変形しなさい',
+      label:'次の式をyについて解きなさい',
       display:`\\(${coefTerm(b,'y')}=${b*k}\\)`,
       extra:'<p style="font-size:1.5vh;color:var(--muted)">※xがない＝傾き0。式は \\(y='+k+'\\) と入力しよう</p>',
       inputs:INPUTS, answers:[0,k], answerLatex:yEqLatex(0,k),
@@ -103,7 +103,7 @@ function genLevel3(){
   const mF=reduce(-A,B), nF=reduce(C,B);
   return {
     level:3,
-    label:'次の式を \\(y=\\) の形に変形しなさい',
+    label:'次の式をyについて解きなさい',
     display:`\\(${joinTerms([coefTerm(A,'x'),coefTerm(B,'y')])}=${C}\\)`,
     extra:'<p style="font-size:1.5vh;color:var(--muted)">※分数は \\(\\frac{a}{b}\\) ボタンで入力</p>',
     inputs:INPUTS, answers:[mF[0]/mF[1], nF[0]/nF[1]], answerLatex:yEqLatex(mF,nF),

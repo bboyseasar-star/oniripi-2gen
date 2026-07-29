@@ -93,7 +93,6 @@ function buildFields(q){
     mf.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!locked) submit(); } });
     forceHalfWidth(mf);
     fields.push(mf); lastFocused=mf;
-    note.innerHTML='※「y =」から式を全部入力してね（分数は <span class="kbd">\\(\\frac{a}{b}\\)</span> ボタン）';
     delete note.dataset.orig;
     typeset(row); return;
   }
@@ -174,9 +173,9 @@ function submit(){
   if(q.mode==='equation'){
     const val=getVal(fields[0]);
     if(!val||!val.trim()){ flashNote('式を入力してね！'); return; }
-    if(!/y\s*=/.test(String(val).replace(/\\/g,''))){ flashNote('「y =」から入力してね'); return; }
-    const pr=parseLinear(val);
-    const ok = pr && !isNaN(pr.a) && !isNaN(pr.b) && Math.abs(pr.a-q.answers[0])<1e-9 && Math.abs(pr.b-q.answers[1])<1e-9;
+    const hasYEquation=/y\s*=/.test(String(val).replace(/\\/g,''));
+    const pr=hasYEquation ? parseLinear(val) : null;
+    const ok = hasYEquation && pr && !isNaN(pr.a) && !isNaN(pr.b) && Math.abs(pr.a-q.answers[0])<1e-9 && Math.abs(pr.b-q.answers[1])<1e-9;
     finishQuestion(ok,[val]);
     return;
   }
